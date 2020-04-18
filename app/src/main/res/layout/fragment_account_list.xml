@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMain"
-    tools:context=".ui.account.FirstFragment">
+    tools:context=".ui.account.AccountListFragment">
 
     <Button
         android:id="@+id/button_first"
