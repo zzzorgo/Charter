@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_account_list.*
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.ui.account.edit.EditAccountActivity
+import java.math.BigDecimal
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -28,8 +29,8 @@ class AccountListFragment : Fragment() {
     private val editAccounequestCode = 1
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
 
@@ -62,8 +63,10 @@ class AccountListFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == editAccounequestCode) {
-            data?.getStringExtra(EditAccountActivity.EXTRA_REPLY)?.let {
-                val account = Account(it)
+            data?.getStringExtra(EditAccountActivity.EXTRA_NAME)?.let {
+                val account = Account(it).apply {
+                    total = BigDecimal(data.getIntExtra(EditAccountActivity.EXTRA_TOTAL, 0))
+                }
                 accountViewModel.insert(account)
             }
         }

@@ -4,7 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import zzz.zzzorgo.charter.R
@@ -29,7 +31,9 @@ class AccountListAdapter internal constructor(
     override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
         val current = accounts[position]
         val accountNameView = holder.accountItemView.findViewById<TextView>(R.id.account_name)
+        val accountTotalView = holder.accountItemView.findViewById<TextView>(R.id.account_total)
         accountNameView.text = current.name
+        accountTotalView.text = String.format("%s", current.total)
     }
 
     internal fun setAccounts(accounts: List<Account>) {

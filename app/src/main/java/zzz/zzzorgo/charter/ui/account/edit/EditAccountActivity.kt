@@ -12,12 +12,14 @@ import zzz.zzzorgo.charter.R
 class EditAccountActivity : AppCompatActivity() {
 
     private lateinit var editAccountNameField: EditText
+    private lateinit var editAccountTotalField: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_account)
 
         editAccountNameField = findViewById(R.id.edit_account_name_field)
+        editAccountTotalField = findViewById(R.id.edit_account_total_field)
         val saveButton = findViewById<Button>(R.id.save_account_button)
 
         saveButton.setOnClickListener {
@@ -25,7 +27,9 @@ class EditAccountActivity : AppCompatActivity() {
 
             if (!TextUtils.isEmpty(editAccountNameField.text)) {
                 val name = editAccountNameField.text.toString()
-                replyIntent.putExtra(EXTRA_REPLY, name)
+                val total = editAccountTotalField.text.toString().toInt()
+                replyIntent.putExtra(EXTRA_NAME, name)
+                replyIntent.putExtra(EXTRA_TOTAL, total)
                 setResult(Activity.RESULT_OK, replyIntent)
                 finish()
             }
@@ -33,6 +37,7 @@ class EditAccountActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_REPLY = "zzz.zzzorgo.charter.editAccount.REPLY"
+        const val EXTRA_NAME = "zzz.zzzorgo.charter.editAccount.NAME"
+        const val EXTRA_TOTAL = "zzz.zzzorgo.charter.editAccount.TOTAL"
     }
 }

@@ -16,4 +16,7 @@ interface AccountDao {
 
     @Query("DELETE FROM account_table")
     suspend fun deleteAll()
+
+    @Query("SELECT * from account_table ORDER BY id ASC")
+    fun test(): List<Account>
 }

@@ -10,10 +10,11 @@ import zzz.zzzorgo.charter.data.dao.AccountDao
 import java.math.BigDecimal
 
 import zzz.zzzorgo.charter.data.dao.RecordDao
+import zzz.zzzorgo.charter.data.migration.MIGRATION_1_2
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.Record
 
-@Database(entities = [Record::class, Account::class], version = 1, exportSchema = false)
+@Database(entities = [Record::class, Account::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 public abstract class AppDatabase : RoomDatabase() {
 
@@ -38,6 +39,7 @@ public abstract class AppDatabase : RoomDatabase() {
                         "database"
                 )
                 .addCallback(InitiateCallback(scope))
+                .addMigrations(MIGRATION_1_2)
                 .build()
                 INSTANCE = instance
                 return instance
@@ -81,12 +83,12 @@ public abstract class AppDatabase : RoomDatabase() {
 class Converters {
     @TypeConverter
     fun fromLong(value: Long?): BigDecimal? {
-        return if (value == null) null else BigDecimal(value).divide(BigDecimal(100))
+        return if (value == null) null else BigDecimal(value).divide(BigDecimal(100L))
     }
 
     @TypeConverter
     fun toLong(bigDecimal: BigDecimal?): Long? {
-        return bigDecimal?.multiply(BigDecimal(100))?.toLong()
+        return bigDecimal?.multiply(BigDecimal(100L))?.toLong()
     }
 }
 
