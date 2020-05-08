@@ -1,7 +1,5 @@
 package zzz.zzzorgo.charter.ui.account
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,9 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_account_list.*
 import zzz.zzzorgo.charter.R
-import zzz.zzzorgo.charter.data.model.Account
-import zzz.zzzorgo.charter.ui.account.edit.EditAccountActivity
-import java.math.BigDecimal
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -25,8 +20,6 @@ import java.math.BigDecimal
 class AccountListFragment : Fragment() {
     private lateinit var accountListAdapter: AccountListAdapter
     private val accountViewModel by viewModels<AccountViewModel>()
-
-    private val editAccounequestCode = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,26 +42,8 @@ class AccountListFragment : Fragment() {
             adapter = accountListAdapter
         }
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
-
         activity?.findViewById<FloatingActionButton>(R.id.fab)?.setOnClickListener {
-            val intent = Intent(this.requireContext(), EditAccountActivity::class.java)
-            startActivityForResult(intent, editAccounequestCode)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK && requestCode == editAccounequestCode) {
-            data?.getStringExtra(EditAccountActivity.EXTRA_NAME)?.let {
-                val account = Account(it).apply {
-                    total = BigDecimal(data.getIntExtra(EditAccountActivity.EXTRA_TOTAL, 0))
-                }
-                accountViewModel.insert(account)
-            }
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
     }
 }
