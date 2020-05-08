@@ -15,9 +15,24 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/destination_account_edit" />
     </fragment>
+
     <fragment
         android:id="@+id/destination_account_edit"
         android:name="zzz.zzzorgo.charter.ui.account.AccountEditFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_account_edit"/>
+
+    <fragment
+        android:id="@+id/destination_record_list"
+        android:name="zzz.zzzorgo.charter.ui.record.RecordListFragment"
+        android:label="RecordListFragment" />
+
+    <action
+        android:id="@+id/action_to_record_list"
+        app:destination="@id/destination_record_list" />
+
+    <action
+        android:id="@+id/action_to_account_list"
+        app:destination="@id/destination_account_list" />
+
 </navigation>
