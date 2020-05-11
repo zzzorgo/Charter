@@ -9,12 +9,7 @@
         android:id="@+id/destination_account_list"
         android:name="zzz.zzzorgo.charter.ui.account.AccountListFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_account_list">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/destination_account_edit" />
-    </fragment>
+        tools:layout="@layout/fragment_account_list"/>
 
     <fragment
         android:id="@+id/destination_account_edit"
