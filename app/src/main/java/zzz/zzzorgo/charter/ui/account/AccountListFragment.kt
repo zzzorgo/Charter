@@ -1,19 +1,17 @@
 package zzz.zzzorgo.charter.ui.account
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_account_list.*
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.utils.showFragmentDialog
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -46,22 +44,10 @@ class AccountListFragment : Fragment() {
         activity?.findViewById<FloatingActionButton>(R.id.fab)?.setOnClickListener {
             showDialog()
         }
-
     }
 
     fun showDialog() {
-        val fragmentManager = requireActivity().supportFragmentManager
         val newFragment = AccountEditFragment()
-
-        // The device is smaller, so show the fragment fullscreen
-        val transaction = fragmentManager.beginTransaction()
-        // For a little polish, specify a transition animation
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        // To make it fullscreen, use the 'content' root view as the container
-        // for the fragment, which is always the root view for the activity
-        transaction
-            .add(android.R.id.content, newFragment)
-            .addToBackStack(null)
-            .commit()
+        showFragmentDialog(requireActivity(), newFragment)
     }
 }
