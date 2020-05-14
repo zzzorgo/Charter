@@ -3,7 +3,6 @@ package zzz.zzzorgo.charter.ui.account
 import android.app.Dialog
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,11 @@ import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Account
+import zzz.zzzorgo.charter.utils.hideKeyboard
 import java.math.BigDecimal
 
 /**
@@ -49,13 +49,10 @@ class AccountEditFragment : DialogFragment() {
                 val newAccount = Account(name)
                 newAccount.total = BigDecimal(total)
                 accountViewModel.insert(newAccount)
-                findNavController().navigateUp()
+                hideKeyboard(requireActivity())
+                dismiss()
             }
-
         }
-//        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-//            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-//        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
