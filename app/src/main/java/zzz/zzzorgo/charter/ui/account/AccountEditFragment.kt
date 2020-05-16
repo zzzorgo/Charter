@@ -10,10 +10,12 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.utils.hideKeyboard
 import java.math.BigDecimal
+import java.util.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -23,12 +25,17 @@ class AccountEditFragment : DialogFragment() {
     val accountViewModel by viewModels<AccountViewModel>()
     private lateinit var editAccountNameField: EditText
     private lateinit var editAccountTotalField: EditText
+    private lateinit var currentCurrency: Currency
 
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        accountViewModel.currency.observe(viewLifecycleOwner, Observer {
+            currentCurrency = it
+        })
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account_edit, container, false)
     }
@@ -44,8 +51,10 @@ class AccountEditFragment : DialogFragment() {
             if (!TextUtils.isEmpty(editAccountNameField.text)) {
                 val name = editAccountNameField.text.toString()
                 val total = editAccountTotalField.text.toString()
-                val newAccount = Account(name)
-                newAccount.total = BigDecimal(total)
+                val newAccount = Account(name).apply {
+                    initialValue = BigDecimal(total)
+                    currency = currentCurrency
+                }
                 accountViewModel.insert(newAccount)
                 hideKeyboard(requireActivity())
                 dismiss()

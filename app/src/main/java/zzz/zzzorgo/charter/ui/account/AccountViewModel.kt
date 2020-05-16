@@ -3,27 +3,37 @@ package zzz.zzzorgo.charter.ui.account
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import zzz.zzzorgo.charter.data.AppDatabase
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.repo.AccountRepository
+import zzz.zzzorgo.charter.data.repo.SettingsRepository
+import java.util.*
 
 
 // Class extends AndroidViewModel and requires application as a parameter.
 class AccountViewModel  (application: Application) : AndroidViewModel(application) {
 
     // The ViewModel maintains a reference to the repository to get data.
-    private val repository: AccountRepository
+    private val accountRepository: AccountRepository
+    private val settingsRepository: SettingsRepository
     // LiveData gives us updated words when they change.
     val allAccounts: LiveData<List<Account>>
+    val currency: LiveData<Currency>
 
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
         // the correct WordRepository.
-        val accountDao = AppDatabase.getDatabase(application, viewModelScope).accountDao()
-        repository = AccountRepository(accountDao)
-        allAccounts = repository.allRecords
+        val database = AppDatabase.getDatabase(application, viewModelScope);
+        accountRepository = AccountRepository(database.accountDao())
+        allAccounts = accountRepository.allRecords
+
+        settingsRepository = SettingsRepository(database.settingsDao())
+        currency = Transformations.map(settingsRepository.settings) {
+            it.mainCurrency
+        }
     }
 
     /**
@@ -34,10 +44,6 @@ class AccountViewModel  (application: Application) : AndroidViewModel(applicatio
      * viewModelScope which we can use here.
      */
     fun insert(account: Account) = viewModelScope.launch {
-        repository.insert(account)
-    }
-
-    fun getRecords(): LiveData<List<Account>> {
-        return allAccounts
+        accountRepository.insert(account)
     }
 }
