@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_record_list.*
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.utils.showFragmentDialog
 
 class RecordListFragment : Fragment() {
     private lateinit var recordListAdapter: RecordListAdapter
@@ -35,6 +37,10 @@ class RecordListFragment : Fragment() {
         record_list.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = recordListAdapter
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.add_record_button).setOnClickListener {
+            showFragmentDialog(requireActivity(), RecordEditFragment())
         }
     }
 }

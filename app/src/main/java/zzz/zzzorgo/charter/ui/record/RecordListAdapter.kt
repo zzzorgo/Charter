@@ -30,8 +30,8 @@ class RecordListAdapter internal constructor(
         val current = records[position]
         val recordCategoryView = holder.recordItemView.findViewById<TextView>(R.id.record_category)
         val recordTotalView = holder.recordItemView.findViewById<TextView>(R.id.record_total)
-        recordCategoryView.text =  String.format("%d", current.id)
-        recordTotalView.text = String.format("%s", current.value)
+        recordCategoryView.text =  String.format("%s", current.valueFrom)
+        recordTotalView.text = String.format("%s", current.valueTo)
     }
 
     internal fun setRecords(records: List<Record>) {

@@ -1,25 +1,28 @@
 package zzz.zzzorgo.charter.data.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.math.BigDecimal
 import java.util.*
 
-@Entity(tableName = "record_table")
-data class Record(val value: BigDecimal) {
+@Entity(tableName = "record_table", foreignKeys = [
+    ForeignKey(childColumns = ["category"], parentColumns = ["id"], entity = Category::class),
+    ForeignKey(childColumns = ["accountFrom"], parentColumns = ["id"], entity = Account::class),
+    ForeignKey(childColumns = ["accountTo"], parentColumns = ["id"], entity = Account::class)
+])
+data class Record(val category: Int = 0) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
 
-    var category: Int = 0
+    var valueFrom: BigDecimal? = BigDecimal.ZERO
+    var valueTo: BigDecimal? = BigDecimal.ZERO
 
-    var valueFrom: BigDecimal = BigDecimal.ZERO
-    var valueTo: BigDecimal = BigDecimal.ZERO
+    var accountFrom: Int? = null
+    var accountTo: Int? = null
 
-    var accountFrom: Int = 0
-    var accountTo: Int = 0
-
-    lateinit var currencyFrom: Currency
-    lateinit var currencyTo: Currency
+    var currencyFrom: Currency? = null
+    var currencyTo: Currency? = null
 
     var deleted: Boolean = false
 }

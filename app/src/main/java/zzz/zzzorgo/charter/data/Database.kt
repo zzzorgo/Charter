@@ -11,8 +11,6 @@ import zzz.zzzorgo.charter.data.dao.AccountDao
 import zzz.zzzorgo.charter.data.dao.CategoryDao
 import zzz.zzzorgo.charter.data.dao.RecordDao
 import zzz.zzzorgo.charter.data.dao.SettingsDao
-import zzz.zzzorgo.charter.data.migration.MIGRATION_1_2
-import zzz.zzzorgo.charter.data.migration.MIGRATION_2_3
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
@@ -20,7 +18,7 @@ import zzz.zzzorgo.charter.data.model.Settings
 import java.math.BigDecimal
 import java.util.*
 
-@Database(entities = [Record::class, Account::class, Category::class, Settings::class], version = 3, exportSchema = true)
+@Database(entities = [Record::class, Account::class, Category::class, Settings::class], version = 1, exportSchema = true)
 @TypeConverters(Converters::class)
 public abstract class AppDatabase : RoomDatabase() {
 
@@ -47,8 +45,7 @@ public abstract class AppDatabase : RoomDatabase() {
                         "database"
                 )
                 .addCallback(InitiateCallback(scope))
-                .addMigrations(MIGRATION_1_2)
-                .addMigrations(MIGRATION_2_3)
+//                .addMigrations(MIGRATION_1_2)
                 .build()
                 INSTANCE = instance
                 return instance

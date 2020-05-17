@@ -6,7 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import zzz.zzzorgo.charter.data.AppDatabase
+import zzz.zzzorgo.charter.data.model.Account
+import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
+import zzz.zzzorgo.charter.data.repo.AccountRepository
+import zzz.zzzorgo.charter.data.repo.CategoryRepository
 import zzz.zzzorgo.charter.data.repo.RecordRepository
 
 
@@ -14,16 +18,26 @@ import zzz.zzzorgo.charter.data.repo.RecordRepository
 class RecordViewModel(application: Application) : AndroidViewModel(application) {
 
     // The ViewModel maintains a reference to the repository to get data.
-    private val repository: RecordRepository
+    private val recordRepository: RecordRepository
+    private val categoryRepository: CategoryRepository
+    private val accountRepository: AccountRepository
+
     // LiveData gives us updated words when they change.
     val allRecords: LiveData<List<Record>>
+    val allCategories: LiveData<List<Category>>
+    val allAccounts: LiveData<List<Account>>
 
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
         // the correct WordRepository.
-        val recordDao = AppDatabase.getDatabase(application, viewModelScope).recordDao()
-        repository = RecordRepository(recordDao)
-        allRecords = repository.allRecords
+        val database = AppDatabase.getDatabase(application, viewModelScope)
+        recordRepository = RecordRepository(database.recordDao())
+        categoryRepository = CategoryRepository(database.categoryDao())
+        accountRepository = AccountRepository(database.accountDao())
+
+        allRecords = recordRepository.allRecords
+        allCategories = categoryRepository.allCategories
+        allAccounts = accountRepository.allAccounts
     }
 
     /**
@@ -34,7 +48,7 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
      * viewModelScope which we can use here.
      */
     fun insert(record: Record) = viewModelScope.launch {
-        repository.insert(record)
+        recordRepository.insert(record)
     }
 
     fun getRecords(): LiveData<List<Record>> {

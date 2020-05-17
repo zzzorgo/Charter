@@ -24,11 +24,10 @@ class AccountListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
-        accountViewModel.allAccounts.observe(this.viewLifecycleOwner, Observer { accounts ->
+        accountViewModel.accountsWithTotal.observe(viewLifecycleOwner, Observer { accounts ->
             accountListAdapter.setAccounts(accounts)
         })
+
         return inflater.inflate(R.layout.fragment_account_list, container, false)
     }
 

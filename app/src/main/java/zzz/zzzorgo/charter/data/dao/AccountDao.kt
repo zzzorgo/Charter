@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import zzz.zzzorgo.charter.data.model.Account
+import zzz.zzzorgo.charter.data.model.AccountWithRecords
 
 @Dao
 interface AccountDao {
@@ -17,6 +19,7 @@ interface AccountDao {
     @Query("DELETE FROM account_table")
     suspend fun deleteAll()
 
-    @Query("SELECT * from account_table ORDER BY id ASC")
-    fun test(): List<Account>
+    @Transaction
+    @Query("SELECT * FROM account_table")
+    fun getAccountsWithRecords(): LiveData<List<AccountWithRecords>>
 }

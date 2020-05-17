@@ -10,29 +10,36 @@ import zzz.zzzorgo.charter.data.AppDatabase
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.repo.AccountRepository
 import zzz.zzzorgo.charter.data.repo.SettingsRepository
+import java.math.BigDecimal
 import java.util.*
 
+data class AccountWithTotal(val account: Account, val total: BigDecimal)
 
 // Class extends AndroidViewModel and requires application as a parameter.
 class AccountViewModel  (application: Application) : AndroidViewModel(application) {
-
-    // The ViewModel maintains a reference to the repository to get data.
     private val accountRepository: AccountRepository
     private val settingsRepository: SettingsRepository
-    // LiveData gives us updated words when they change.
-    val allAccounts: LiveData<List<Account>>
     val currency: LiveData<Currency>
+    val accountsWithTotal: LiveData<List<AccountWithTotal>>
 
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
         // the correct WordRepository.
         val database = AppDatabase.getDatabase(application, viewModelScope);
         accountRepository = AccountRepository(database.accountDao())
-        allAccounts = accountRepository.allRecords
 
         settingsRepository = SettingsRepository(database.settingsDao())
         currency = Transformations.map(settingsRepository.settings) {
             it.mainCurrency
+        }
+
+        accountsWithTotal = Transformations.map(accountRepository.accountsWithRecords) {
+            it.map { accountWithRecord ->
+                val totalIncome = accountWithRecord.incomeRecords.fold(BigDecimal.ZERO) { acc, record -> acc + (record.valueTo ?: BigDecimal.ZERO) }
+                val totalOutcome = accountWithRecord.outcomeRecords.fold(BigDecimal.ZERO) { acc, record -> acc + (record.valueFrom ?: BigDecimal.ZERO) }
+                val total = accountWithRecord.account.initialValue + totalIncome - totalOutcome
+                AccountWithTotal(accountWithRecord.account, total)
+            }
         }
     }
 
