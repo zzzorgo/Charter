@@ -20,7 +20,14 @@
     <fragment
         android:id="@+id/destination_record_list"
         android:name="zzz.zzzorgo.charter.ui.record.RecordListFragment"
-        android:label="RecordListFragment" />
+        android:label="RecordListFragment"
+        tools:layout="@layout/fragment_record_list" />
+
+    <fragment
+        android:id="@+id/destination_misc"
+        android:name="zzz.zzzorgo.charter.ui.misc.MiscFragment"
+        android:label="RecordListFragment"
+        tools:layout="@layout/fragment_misc" />
 
     <action
         android:id="@+id/action_to_record_list"
@@ -29,5 +36,9 @@
     <action
         android:id="@+id/action_to_account_list"
         app:destination="@id/destination_account_list" />
+
+    <action
+        android:id="@+id/action_to_misc"
+        app:destination="@id/destination_misc" />
 
 </navigation>

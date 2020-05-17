@@ -8,4 +8,5 @@
     <string name="previous">Previous</string>
 
     <string name="save_button_caption">Save</string>
+    <string name="edit_categories_button_caption">Categories</string>
 </resources>

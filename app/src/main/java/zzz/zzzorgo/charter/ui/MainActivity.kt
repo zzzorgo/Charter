@@ -1,19 +1,18 @@
 package zzz.zzzorgo.charter.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
 import zzz.zzzorgo.charter.R
 
 val bottomNavBarItemIdToNavAction = mapOf(
     R.id.destination_account_list to R.id.action_to_account_list,
-    R.id.destination_record_list to R.id.action_to_record_list
+    R.id.destination_record_list to R.id.action_to_record_list,
+    R.id.destination_misc to R.id.action_to_misc
 )
 
 class MainActivity : AppCompatActivity() {
