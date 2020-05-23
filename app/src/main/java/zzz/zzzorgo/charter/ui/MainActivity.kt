@@ -1,5 +1,6 @@
 package zzz.zzzorgo.charter.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,9 +8,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.android.volley.Response
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.data.model.cbr.CbrCurrencyList
 import zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment
+import zzz.zzzorgo.charter.utils.ApplicationGraph
+import zzz.zzzorgo.charter.utils.DaggerApplicationGraph
+import zzz.zzzorgo.charter.utils.Network
+import zzz.zzzorgo.charter.utils.XmlRequest
 
 val bottomNavBarItemIdToNavAction = mapOf(
     R.id.destination_account_list to R.id.action_to_account_list,
@@ -20,11 +27,36 @@ val bottomNavBarItemIdToNavAction = mapOf(
 class MainActivity : AppCompatActivity(),
     CategoryManagerFragment.OnListFragmentInteractionListener
 {
+    var data: Map<String?, String?>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
         setupBottomNavBar()
+        val applicationGraph: ApplicationGraph = DaggerApplicationGraph.create()
+        getDataFromNetwork(this.applicationContext)
+    }
+
+    fun getDataFromNetwork(context: Context) {
+        val url = "https://www.cbr.ru/scripts/XML_valFull.asp"
+
+        val jsonObjectRequest = XmlRequest(
+            url, CbrCurrencyList::class.java, null,
+            Response.Listener { response ->
+                val mapIsoToCbrCurrency = response.Valuta?.Item?.map {
+                    it.ISO_Char_Code to it.ParentCode?.trim()
+                }?.toMap()
+                println(mapIsoToCbrCurrency)
+                data = mapIsoToCbrCurrency
+            },
+            Response.ErrorListener { error ->
+                // TODO: Handle error
+                println(error)
+            }
+        )
+
+// Access the RequestQueue through your singleton class.
+        Network.getInstance(context).addToRequestQueue(jsonObjectRequest)
     }
 
     private fun setupBottomNavBar() {

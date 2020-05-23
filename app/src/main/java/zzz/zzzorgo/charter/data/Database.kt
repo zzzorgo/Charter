@@ -62,7 +62,7 @@ public abstract class AppDatabase : RoomDatabase() {
                 super.onOpen(db)
                 INSTANCE?.let { database ->
                     scope.launch {
-                        populateDatabase(
+                        populateDatabaseMock(
                             database.recordDao(),
                             database.accountDao(),
                             database.settingsDao(),
