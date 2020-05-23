@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.utils.showFragmentDialog
 
 /**
  * A fragment representing a list of Items.
@@ -49,6 +51,10 @@ class CategoryManagerFragment : Fragment() {
             adapter = listAdapter
         }
 
+        view.findViewById<FloatingActionButton>(R.id.add_category_button).setOnClickListener {
+            val fragment = CategoryManagerEditFragment()
+            showFragmentDialog(requireActivity(), fragment)
+        }
     }
 
     override fun onAttach(context: Context) {
