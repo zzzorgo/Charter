@@ -18,7 +18,6 @@ import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
 import zzz.zzzorgo.charter.utils.hideKeyboard
 import java.math.BigDecimal
-import java.util.*
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -73,13 +72,15 @@ class RecordEditFragment : DialogFragment() {
 
         saveButton.setOnClickListener {
             val categoryId = (editCategoryField.selectedItem as Category).id
+            val accountFrom = editRecordAccountFromField.selectedItem as Account
+            val accountTo = editRecordAccountToField.selectedItem as Account
             val record = Record(categoryId).apply {
-                accountFrom = (editRecordAccountFromField.selectedItem as Account).id
-                accountTo = (editRecordAccountToField.selectedItem as Account).id
+                this.accountFrom = accountFrom.id
+                this.accountTo = accountTo.id
                 valueFrom = BigDecimal(editRecordValueFromField.text.toString())
                 valueTo = BigDecimal(editRecordValueToField.text.toString())
-                currencyFrom = Currency.getInstance("USD")
-                currencyTo = Currency.getInstance("USD")
+                currencyFrom = if (accountFrom.name != "") accountFrom.currency else null
+                currencyTo = if (accountTo.name != "") accountTo.currency else null
             }
 
             recordViewModel.insert(record)

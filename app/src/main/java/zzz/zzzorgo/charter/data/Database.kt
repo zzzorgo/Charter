@@ -11,14 +11,16 @@ import zzz.zzzorgo.charter.data.dao.AccountDao
 import zzz.zzzorgo.charter.data.dao.CategoryDao
 import zzz.zzzorgo.charter.data.dao.RecordDao
 import zzz.zzzorgo.charter.data.dao.SettingsDao
+import zzz.zzzorgo.charter.data.migration.MIGRATION_1_2
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
 import zzz.zzzorgo.charter.data.model.Settings
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 
-@Database(entities = [Record::class, Account::class, Category::class, Settings::class], version = 1, exportSchema = true)
+@Database(entities = [Record::class, Account::class, Category::class, Settings::class], version = 2, exportSchema = true)
 @TypeConverters(Converters::class)
 public abstract class AppDatabase : RoomDatabase() {
 
@@ -45,7 +47,7 @@ public abstract class AppDatabase : RoomDatabase() {
                         "database"
                 )
                 .addCallback(InitiateCallback(scope))
-//                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2)
                 .build()
                 INSTANCE = instance
                 return instance
@@ -114,13 +116,23 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromCurrency(value: Currency): String {
-        return value.currencyCode
+    fun fromCurrency(value: Currency?): String? {
+        return value?.currencyCode
     }
 
     @TypeConverter
-    fun toCurrency(value: String): Currency {
-        return Currency.getInstance(value)
+    fun toCurrency(value: String?): Currency? {
+        return if (value != null) Currency.getInstance(value) else null
+    }
+
+    @TypeConverter
+    fun fromLocalDateTime(value: LocalDateTime): String {
+        return value.toString()
+    }
+
+    @TypeConverter
+    fun toLocalDateTime(value: String): LocalDateTime {
+        return LocalDateTime.parse(value)
     }
 }
 

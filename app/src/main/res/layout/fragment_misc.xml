@@ -9,7 +9,7 @@
     android:background="@color/colorMain">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/open_category_manager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

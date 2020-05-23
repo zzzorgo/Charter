@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity(tableName = "record_table", foreignKeys = [
@@ -23,6 +24,8 @@ data class Record(val category: Int = 0) {
 
     var currencyFrom: Currency? = null
     var currencyTo: Currency? = null
+
+    var date: LocalDateTime = LocalDateTime.now()
 
     var deleted: Boolean = false
 }

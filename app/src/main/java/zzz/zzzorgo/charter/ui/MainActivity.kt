@@ -3,11 +3,13 @@ package zzz.zzzorgo.charter.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment
 
 val bottomNavBarItemIdToNavAction = mapOf(
     R.id.destination_account_list to R.id.action_to_account_list,
@@ -15,7 +17,9 @@ val bottomNavBarItemIdToNavAction = mapOf(
     R.id.destination_misc to R.id.action_to_misc
 )
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),
+    CategoryManagerFragment.OnListFragmentInteractionListener
+{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,5 +62,9 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onListFragmentInteraction(item: View) {
+        println("123")
     }
 }
