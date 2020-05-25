@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import zzz.zzzorgo.charter.data.dao.AccountDao
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.AccountWithRecords
+import javax.inject.Inject
 
-class AccountRepository(private val accountDao: AccountDao) {
+class AccountRepository @Inject constructor(private val accountDao: AccountDao) {
     val allAccounts: LiveData<List<Account>> = accountDao.getAccounts()
     val accountsWithRecords: LiveData<List<AccountWithRecords>> = accountDao.getAccountsWithRecords()
 

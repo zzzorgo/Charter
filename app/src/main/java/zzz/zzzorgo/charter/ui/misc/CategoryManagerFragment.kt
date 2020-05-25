@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.ui.record.RecordViewModel
+import zzz.zzzorgo.charter.utils.MyApplication
 import zzz.zzzorgo.charter.utils.showFragmentDialog
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
@@ -26,8 +30,20 @@ class CategoryManagerFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
 
-    private val viewModel by viewModels<CategoryManagerViewModel>()
     private lateinit var listAdapter: CategoryManagerRecyclerViewAdapter
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<RecordViewModel> { viewModelFactory }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnListFragmentInteractionListener) {
+            listener = context
+        }
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,13 +70,6 @@ class CategoryManagerFragment : Fragment() {
         view.findViewById<FloatingActionButton>(R.id.add_category_button).setOnClickListener {
             val fragment = CategoryManagerEditFragment()
             showFragmentDialog(requireActivity(), fragment)
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
         }
     }
 

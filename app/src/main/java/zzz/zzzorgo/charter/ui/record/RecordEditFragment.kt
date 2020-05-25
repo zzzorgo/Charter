@@ -1,5 +1,6 @@
 package zzz.zzzorgo.charter.ui.record
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,19 +13,21 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
+import zzz.zzzorgo.charter.utils.MyApplication
 import zzz.zzzorgo.charter.utils.hideKeyboard
 import java.math.BigDecimal
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class RecordEditFragment : DialogFragment() {
 
-    private val recordViewModel by viewModels<RecordViewModel>()
     private lateinit var editRecordValueToField: EditText
     private lateinit var editRecordValueFromField: EditText
     private lateinit var editCategoryField: Spinner
@@ -32,6 +35,16 @@ class RecordEditFragment : DialogFragment() {
     private lateinit var editRecordAccountToField: Spinner
     private lateinit var editRecordAccountFromField: Spinner
     private lateinit var accountsAdapter: ArrayAdapter<Account>
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<RecordViewModel> { viewModelFactory }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
 
 
     override fun onCreateView(
@@ -55,12 +68,12 @@ class RecordEditFragment : DialogFragment() {
         editRecordAccountToField.adapter = accountsAdapter
         editRecordAccountFromField.adapter = accountsAdapter
 
-        recordViewModel.allCategories.observe(viewLifecycleOwner, Observer {
+        viewModel.allCategories.observe(viewLifecycleOwner, Observer {
             categoriesAdapter.clear()
             categoriesAdapter.addAll(it)
         })
 
-        recordViewModel.allAccounts.observe(viewLifecycleOwner, Observer {
+        viewModel.allAccounts.observe(viewLifecycleOwner, Observer {
             accountsAdapter.clear()
             accountsAdapter.add(Account(""))
             accountsAdapter.addAll(it)
@@ -83,7 +96,7 @@ class RecordEditFragment : DialogFragment() {
                 currencyTo = if (accountTo.name != "") accountTo.currency else null
             }
 
-            recordViewModel.insert(record)
+            viewModel.insert(record)
             hideKeyboard(requireActivity())
             dismiss()
         }

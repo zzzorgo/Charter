@@ -13,8 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.cbr.CbrCurrencyList
 import zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment
-import zzz.zzzorgo.charter.utils.ApplicationGraph
-import zzz.zzzorgo.charter.utils.DaggerApplicationGraph
 import zzz.zzzorgo.charter.utils.Network
 import zzz.zzzorgo.charter.utils.XmlRequest
 
@@ -33,7 +31,6 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
         setupBottomNavBar()
-        val applicationGraph: ApplicationGraph = DaggerApplicationGraph.create()
         getDataFromNetwork(this.applicationContext)
     }
 

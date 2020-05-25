@@ -1,5 +1,6 @@
 package zzz.zzzorgo.charter.ui.account
 
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -11,28 +12,39 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Account
+import zzz.zzzorgo.charter.utils.MyApplication
 import zzz.zzzorgo.charter.utils.hideKeyboard
 import java.math.BigDecimal
 import java.util.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class AccountEditFragment : DialogFragment() {
 
-    val accountViewModel by viewModels<AccountViewModel>()
     private lateinit var editAccountNameField: EditText
     private lateinit var editAccountTotalField: EditText
     private lateinit var currentCurrency: Currency
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<AccountViewModel> { viewModelFactory }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        accountViewModel.currency.observe(viewLifecycleOwner, Observer {
+        viewModel.currency.observe(viewLifecycleOwner, Observer {
             currentCurrency = it
         })
 
@@ -55,7 +67,7 @@ class AccountEditFragment : DialogFragment() {
                     initialValue = BigDecimal(total)
                     currency = currentCurrency
                 }
-                accountViewModel.insert(newAccount)
+                viewModel.insert(newAccount)
                 hideKeyboard(requireActivity())
                 dismiss()
             }
