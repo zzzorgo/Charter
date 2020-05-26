@@ -6,18 +6,22 @@ import dagger.Component
 import zzz.zzzorgo.charter.data.DatabaseModule
 import zzz.zzzorgo.charter.ui.account.AccountEditFragment
 import zzz.zzzorgo.charter.ui.account.AccountListFragment
+import zzz.zzzorgo.charter.ui.account.AccountModule
 import zzz.zzzorgo.charter.ui.misc.CategoryManagerEditFragment
 import zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment
+import zzz.zzzorgo.charter.ui.misc.CategoryManagerModule
 import zzz.zzzorgo.charter.ui.record.RecordEditFragment
 import zzz.zzzorgo.charter.ui.record.RecordListFragment
-import zzz.zzzorgo.charter.utils.MainModule
+import zzz.zzzorgo.charter.ui.record.RecordModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
     ViewModelModule::class,
-    MainModule::class,
-    DatabaseModule::class
+    DatabaseModule::class,
+    AccountModule::class,
+    CategoryManagerModule::class,
+    RecordModule::class
 ])
 interface ApplicationComponent {
     @Component.Factory

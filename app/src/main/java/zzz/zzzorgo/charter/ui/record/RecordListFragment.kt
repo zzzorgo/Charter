@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_record_list.*
-import zzz.zzzorgo.charter.MyApplication
+import zzz.zzzorgo.charter.CharterApplication
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.utils.showFragmentDialog
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class RecordListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (requireActivity().application as MyApplication).appComponent.inject(this)
+        (requireActivity().application as CharterApplication).appComponent.inject(this)
     }
 
     override fun onCreateView(

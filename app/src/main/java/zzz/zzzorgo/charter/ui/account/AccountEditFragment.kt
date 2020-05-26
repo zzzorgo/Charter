@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import zzz.zzzorgo.charter.MyApplication
+import zzz.zzzorgo.charter.CharterApplication
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.utils.hideKeyboard
@@ -37,7 +37,7 @@ class AccountEditFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (requireActivity().application as MyApplication).appComponent.inject(this)
+        (requireActivity().application as CharterApplication).appComponent.inject(this)
     }
 
     override fun onCreateView(
