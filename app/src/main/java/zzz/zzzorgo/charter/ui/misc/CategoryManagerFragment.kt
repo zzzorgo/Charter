@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import zzz.zzzorgo.charter.MyApplication
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.ui.record.RecordViewModel
-import zzz.zzzorgo.charter.utils.MyApplication
 import zzz.zzzorgo.charter.utils.showFragmentDialog
 import javax.inject.Inject
 

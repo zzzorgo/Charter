@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import zzz.zzzorgo.charter.di.ViewModelKey
 import zzz.zzzorgo.charter.ui.account.AccountViewModel
 import zzz.zzzorgo.charter.ui.misc.CategoryManagerViewModel
 import zzz.zzzorgo.charter.ui.record.RecordViewModel

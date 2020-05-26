@@ -1,15 +1,15 @@
 package zzz.zzzorgo.charter.data
 
-//todo понять шо це таке
-
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
+import android.content.Context
+import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import zzz.zzzorgo.charter.data.dao.AccountDao
 import zzz.zzzorgo.charter.data.dao.CategoryDao
 import zzz.zzzorgo.charter.data.dao.RecordDao
 import zzz.zzzorgo.charter.data.dao.SettingsDao
+import zzz.zzzorgo.charter.data.migration.MIGRATION_1_2
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
@@ -26,6 +26,49 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun settingsDao(): SettingsDao
     abstract fun categoryDao(): CategoryDao
+
+    private class WordDatabaseCallback(
+        private val scope: CoroutineScope
+    ) : RoomDatabase.Callback() {
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            INSTANCE?.let { database ->
+                scope.launch {
+                    populateDatabaseMock(
+                        database.recordDao(),
+                        database.accountDao(),
+                        database.settingsDao(),
+                        database.categoryDao()
+                    )
+                }
+            }
+        }
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(
+            context: Context,
+            scope: CoroutineScope
+        ): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "word_database"
+                )
+                    .addCallback(WordDatabaseCallback(scope))
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
+                INSTANCE = instance
+
+                instance
+            }
+        }
+    }
 }
 
 class Converters {

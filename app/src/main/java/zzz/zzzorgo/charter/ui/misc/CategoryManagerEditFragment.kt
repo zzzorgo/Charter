@@ -13,9 +13,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import zzz.zzzorgo.charter.MyApplication
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Category
-import zzz.zzzorgo.charter.utils.MyApplication
 import zzz.zzzorgo.charter.utils.hideKeyboard
 import javax.inject.Inject
 
