@@ -11,7 +11,7 @@ import zzz.zzzorgo.charter.data.model.Record
 @Dao
 interface RecordDao {
 
-    @Query("SELECT * from record_table ORDER BY id ASC")
+    @Query("SELECT * from record_table ORDER BY date DESC")
     fun getRecords(): LiveData<List<Record>>
 
     @Insert

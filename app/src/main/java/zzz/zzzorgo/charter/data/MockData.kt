@@ -9,6 +9,9 @@ import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
 import zzz.zzzorgo.charter.data.model.Settings
 import java.math.BigDecimal
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 import kotlin.random.Random
 
@@ -99,6 +102,7 @@ suspend fun populateDatabaseMock(
             valueFrom = BigDecimal(Random.nextLong(100, 400000)).divide(BigDecimal(100L))
             accountFrom = account.id
             currencyFrom = account.currency
+            date = getRandomDate()
         }
 
         record
@@ -111,46 +115,21 @@ suspend fun populateDatabaseMock(
             valueTo = BigDecimal(Random.nextLong(100000, 4000000)).divide(BigDecimal(100L))
             accountTo = account.id
             currencyTo = account.currency
+            date = getRandomDate()
         }
 
         record
     }
-
-//    val transferRecords = (1..10).map {
-//        val record = Record(nullCategory.id).apply {
-//            val account1 = accounts.random()
-//            val account2 = accounts.random()
-//            valueTo = BigDecimal(Random.nextLong(100000, 4000000)).divide(BigDecimal(100L))
-//            accountTo = account.id
-//            currencyTo = account.currency
-//        }
-//
-//        record
-//    }
 
     recordDao.insertAll(*outcomeRecords.toTypedArray())
     recordDao.insertAll(*incomeRecords.toTypedArray())
-//    recordDao.insertAll(*outcomeRecords.toTypedArray())
 }
 
-fun createRecords(
-    categories: List<Category>,
-    accounts: List<Account>,
-    count: Int,
-    minValue: Long,
-    maxValue: Long
-): Array<Record> {
-    val records = (1..count).map {
-        val category = categories.random()
-        val record = Record(category.id).apply {
-            val account = accounts.random()
-            valueFrom = BigDecimal(Random.nextLong(minValue, maxValue)).divide(BigDecimal(100L))
-            accountFrom = account.id
-            currencyFrom = account.currency
-        }
+fun getRandomDate(): LocalDateTime {
+    val max = Date().time
+    val min = 1527361064000L
 
-        record
-    }
+    val random = Random.nextLong(min, max)
 
-    return records.toTypedArray()
+    return Instant.ofEpochMilli(random).atZone(ZoneId.systemDefault()).toLocalDateTime();
 }
