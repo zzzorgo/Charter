@@ -1,16 +1,15 @@
 package zzz.zzzorgo.charter.data.model
 
-import androidx.room.*
-import java.math.BigDecimal
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Relation
 import java.util.*
 
 @Entity(tableName = "account_table")
 data class Account(var name: String) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
-
-    @ColumnInfo(defaultValue = "0")
-    var initialValue: BigDecimal = BigDecimal("0")
+    var id: Long? = null
 
     lateinit var currency: Currency
 

@@ -9,7 +9,6 @@ import zzz.zzzorgo.charter.data.dao.AccountDao
 import zzz.zzzorgo.charter.data.dao.CategoryDao
 import zzz.zzzorgo.charter.data.dao.RecordDao
 import zzz.zzzorgo.charter.data.dao.SettingsDao
-import zzz.zzzorgo.charter.data.migration.MIGRATION_1_2
 import zzz.zzzorgo.charter.data.model.Account
 import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
@@ -18,7 +17,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
-@Database(entities = [Record::class, Account::class, Category::class, Settings::class], version = 2, exportSchema = true)
+@Database(entities = [Record::class, Account::class, Category::class, Settings::class], version = 1, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -61,7 +60,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "word_database"
                 )
                     .addCallback(WordDatabaseCallback(scope))
-                    .addMigrations(MIGRATION_1_2)
+//                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
 

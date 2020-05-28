@@ -1,8 +1,6 @@
 package zzz.zzzorgo.charter.data.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -12,20 +10,37 @@ import java.util.*
     ForeignKey(childColumns = ["accountFrom"], parentColumns = ["id"], entity = Account::class),
     ForeignKey(childColumns = ["accountTo"], parentColumns = ["id"], entity = Account::class)
 ])
-data class Record(val category: Int = 0) {
+data class Record(val category: Long = 0) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    var id: Long? = null
 
     var valueFrom: BigDecimal? = BigDecimal.ZERO
     var valueTo: BigDecimal? = BigDecimal.ZERO
 
-    var accountFrom: Int? = null
-    var accountTo: Int? = null
+    var accountFrom: Long? = null
+    var accountTo: Long? = null
 
     var currencyFrom: Currency? = null
     var currencyTo: Currency? = null
 
     var date: LocalDateTime = LocalDateTime.now()
 
-    var deleted: Boolean = false
+    @TypeConverters(StatusConverter::class)
+    var status: Status = Status.NORMAL
+
+    enum class Status {
+        NORMAL, HIDDEN, DELETED
+    }
+
+    class StatusConverter {
+        @TypeConverter
+        fun toStatus(statusName: String): Status {
+            return Status.valueOf(statusName)
+        }
+
+        @TypeConverter
+        fun fromStatus(status: Status): String {
+            return status.name
+        }
+    }
 }

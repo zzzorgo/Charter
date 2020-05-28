@@ -14,7 +14,7 @@ interface AccountDao {
     fun getAccounts(): LiveData<List<Account>>
 
     @Insert
-    suspend fun insert(account: Account)
+    suspend fun insert(account: Account): Long
 
     @Query("DELETE FROM account_table")
     suspend fun deleteAll()

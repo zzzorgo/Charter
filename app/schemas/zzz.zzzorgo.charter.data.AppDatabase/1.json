@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "981c5eca22648f93008091d590295d56",
+    "identityHash": "f69507f47f9a88d019646e7127289c0e",
     "entities": [
       {
         "tableName": "record_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `valueFrom` INTEGER, `valueTo` INTEGER, `accountFrom` INTEGER, `accountTo` INTEGER, `currencyFrom` TEXT, `currencyTo` TEXT, `deleted` INTEGER NOT NULL, `category` INTEGER NOT NULL, FOREIGN KEY(`category`) REFERENCES `category_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`accountFrom`) REFERENCES `account_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`accountTo`) REFERENCES `account_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `valueFrom` INTEGER, `valueTo` INTEGER, `accountFrom` INTEGER, `accountTo` INTEGER, `currencyFrom` TEXT, `currencyTo` TEXT, `date` TEXT NOT NULL, `status` TEXT NOT NULL, `category` INTEGER NOT NULL, FOREIGN KEY(`category`) REFERENCES `category_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`accountFrom`) REFERENCES `account_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`accountTo`) REFERENCES `account_table`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -51,9 +51,15 @@
             "notNull": false
           },
           {
-            "fieldPath": "deleted",
-            "columnName": "deleted",
-            "affinity": "INTEGER",
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -108,20 +114,13 @@
       },
       {
         "tableName": "account_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `initialValue` INTEGER NOT NULL DEFAULT 0, `currency` TEXT NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `currency` TEXT NOT NULL, `deleted` INTEGER NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": false
-          },
-          {
-            "fieldPath": "initialValue",
-            "columnName": "initialValue",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
           },
           {
             "fieldPath": "currency",
@@ -225,7 +224,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '981c5eca22648f93008091d590295d56')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f69507f47f9a88d019646e7127289c0e')"
     ]
   }
 }

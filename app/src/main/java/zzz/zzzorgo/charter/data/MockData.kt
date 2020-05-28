@@ -49,11 +49,7 @@ suspend fun populateDatabaseMock(
     val settings = Settings(rubCurrency)
     settingsDao.insert(settings)
 
-    val nullCategory = Category("nullCategory").apply {
-        id = 1
-        income = true
-        outcome = true
-    }
+    val nullCategory = Category.nullCategory
     val foodCategory = Category("Еда").apply {
         id = 2
         income = false

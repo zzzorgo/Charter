@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import zzz.zzzorgo.charter.data.model.Account
+import zzz.zzzorgo.charter.data.model.Category.Companion.nullCategory
+import zzz.zzzorgo.charter.data.model.Record
 import zzz.zzzorgo.charter.data.repo.AccountRepository
+import zzz.zzzorgo.charter.data.repo.RecordRepository
 import zzz.zzzorgo.charter.data.repo.SettingsRepository
 import java.math.BigDecimal
 import java.util.*
@@ -17,6 +20,7 @@ data class AccountWithTotal(val account: Account, val total: BigDecimal)
 // Class extends AndroidViewModel and requires application as a parameter.
 class AccountViewModel @Inject constructor(
     private var accountRepository: AccountRepository,
+    private var recordRepository: RecordRepository,
     settingsRepository: SettingsRepository
 ) : ViewModel() {
 
@@ -32,8 +36,16 @@ class AccountViewModel @Inject constructor(
      * ViewModels have a coroutine scope based on their lifecycle called
      * viewModelScope which we can use here.
      */
-    fun insert(account: Account) = viewModelScope.launch {
-        accountRepository.insert(account)
+    fun insert(account: Account, initialValue: BigDecimal) = viewModelScope.launch {
+        val accountId = accountRepository.insert(account)
+
+        val initialRecord = Record(nullCategory.id).apply {
+            valueTo = initialValue
+            currencyTo = account.currency
+            accountTo = accountId
+            status = Record.Status.HIDDEN
+        }
+        recordRepository.insert(initialRecord)
     }
 
     init {
@@ -41,7 +53,7 @@ class AccountViewModel @Inject constructor(
             it.map { accountWithRecord ->
                 val totalIncome = accountWithRecord.incomeRecords.fold(BigDecimal.ZERO) { acc, record -> acc + (record.valueTo ?: BigDecimal.ZERO) }
                 val totalOutcome = accountWithRecord.outcomeRecords.fold(BigDecimal.ZERO) { acc, record -> acc + (record.valueFrom ?: BigDecimal.ZERO) }
-                val total = accountWithRecord.account.initialValue + totalIncome - totalOutcome
+                val total = totalIncome - totalOutcome
                 AccountWithTotal(accountWithRecord.account, total)
             }
         }

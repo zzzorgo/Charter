@@ -64,10 +64,9 @@ class AccountEditFragment : DialogFragment() {
                 val name = editAccountNameField.text.toString()
                 val total = editAccountTotalField.text.toString()
                 val newAccount = Account(name).apply {
-                    initialValue = BigDecimal(total)
                     currency = currentCurrency
                 }
-                viewModel.insert(newAccount)
+                viewModel.insert(newAccount, BigDecimal(total))
                 hideKeyboard(requireActivity())
                 dismiss()
             }

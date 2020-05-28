@@ -10,7 +10,7 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDao) 
     val allAccounts: LiveData<List<Account>> = accountDao.getAccounts()
     val accountsWithRecords: LiveData<List<AccountWithRecords>> = accountDao.getAccountsWithRecords()
 
-    suspend fun insert(account: Account) {
-        accountDao.insert(account)
+    suspend fun insert(account: Account): Long {
+        return accountDao.insert(account)
     }
 }
