@@ -48,7 +48,7 @@ class CurrencyRepository @Inject constructor(private val context: Context) {
         return history
     }
 
-    suspend fun getCbrCurrencyCodes(): Map<String?, String?> {
+    private suspend fun getCbrCurrencyCodes(): Map<String?, String?> {
         val url = "https://www.cbr.ru/scripts/XML_valFull.asp"
 
         val response = makeRequest(url, CbrCurrencyList::class.java)
@@ -59,7 +59,7 @@ class CurrencyRepository @Inject constructor(private val context: Context) {
         return mapIsoToCbrCurrency ?: emptyMap()
     }
 
-    suspend fun <T>makeRequest(url: String, modelClass: Class<T>) =
+    private suspend fun <T>makeRequest(url: String, modelClass: Class<T>) =
         suspendCoroutine<T?> { cont ->
             val jsonObjectRequest = XmlRequest(
                 Request.Method.GET,

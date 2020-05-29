@@ -18,6 +18,13 @@
         tools:layout="@layout/fragment_record_list" />
 
     <fragment
+        android:id="@+id/destination_statistic"
+        android:name="zzz.zzzorgo.charter.ui.statistic.StatisticFragment"
+        android:label="StatisticFragment"
+        tools:layout="@layout/fragment_statistic" >
+    </fragment>
+
+    <fragment
         android:id="@+id/destination_misc"
         android:name="zzz.zzzorgo.charter.ui.misc.MiscFragment"
         android:label="MiscFragment"
@@ -40,6 +47,10 @@
     <action
         android:id="@+id/action_to_account_list"
         app:destination="@id/destination_account_list" />
+
+    <action
+        android:id="@+id/action_to_statistic"
+        app:destination="@id/destination_statistic" />
 
     <action
         android:id="@+id/action_to_misc"

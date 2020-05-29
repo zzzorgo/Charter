@@ -14,6 +14,7 @@ import zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment
 val bottomNavBarItemIdToNavAction = mapOf(
     R.id.destination_account_list to R.id.action_to_account_list,
     R.id.destination_record_list to R.id.action_to_record_list,
+    R.id.destination_statistic to R.id.action_to_statistic,
     R.id.destination_misc to R.id.action_to_misc
 )
 

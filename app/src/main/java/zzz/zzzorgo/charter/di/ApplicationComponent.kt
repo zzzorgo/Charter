@@ -13,6 +13,8 @@ import zzz.zzzorgo.charter.ui.misc.CategoryManagerModule
 import zzz.zzzorgo.charter.ui.record.RecordEditFragment
 import zzz.zzzorgo.charter.ui.record.RecordListFragment
 import zzz.zzzorgo.charter.ui.record.RecordModule
+import zzz.zzzorgo.charter.ui.statistic.StatisticFragment
+import zzz.zzzorgo.charter.ui.statistic.StatisticModule
 import javax.inject.Singleton
 
 @Singleton
@@ -21,7 +23,8 @@ import javax.inject.Singleton
     DatabaseModule::class,
     AccountModule::class,
     CategoryManagerModule::class,
-    RecordModule::class
+    RecordModule::class,
+    StatisticModule::class
 ])
 interface ApplicationComponent {
     @Component.Factory
@@ -29,10 +32,11 @@ interface ApplicationComponent {
         fun create(@BindsInstance applicationContext: Context): ApplicationComponent
     }
 
-    fun inject(activity: RecordEditFragment)
-    fun inject(activity: RecordListFragment)
-    fun inject(activity: AccountEditFragment)
-    fun inject(activity: AccountListFragment)
-    fun inject(activity: CategoryManagerEditFragment)
-    fun inject(activity: CategoryManagerFragment)
+    fun inject(fragment: RecordEditFragment)
+    fun inject(fragment: RecordListFragment)
+    fun inject(fragment: AccountEditFragment)
+    fun inject(fragment: AccountListFragment)
+    fun inject(fragment: CategoryManagerEditFragment)
+    fun inject(fragment: CategoryManagerFragment)
+    fun inject(fragment: StatisticFragment)
 }

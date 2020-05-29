@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item  android:id="@+id/destination_account_list" android:title="1" />
-    <item  android:id="@+id/destination_record_list" android:title="2" />
-    <item  android:id="@+id/destination_misc" android:title="3" />
+    <item  android:id="@+id/destination_account_list" android:title="Accounts" />
+    <item  android:id="@+id/destination_record_list" android:title="Records" />
+    <item  android:id="@+id/destination_statistic" android:title="Statistic" />
+    <item  android:id="@+id/destination_misc" android:title="Misc" />
 </menu>

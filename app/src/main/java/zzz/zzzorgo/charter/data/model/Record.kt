@@ -28,8 +28,19 @@ data class Record(val category: Long = 0) {
     @TypeConverters(StatusConverter::class)
     var status: Status = Status.NORMAL
 
+    val type get() = when {
+        valueFrom != BigDecimal.ZERO && valueTo == BigDecimal.ZERO -> Type.OUTCOME
+        valueTo != BigDecimal.ZERO && valueFrom == BigDecimal.ZERO -> Type.INCOME
+        valueFrom != BigDecimal.ZERO && valueTo != BigDecimal.ZERO -> Type.TRANSFER
+        else -> throw IllegalStateException("Record is not properly initialized")
+    }
+
     enum class Status {
         NORMAL, HIDDEN, DELETED
+    }
+
+    enum class Type {
+        INCOME, OUTCOME, TRANSFER
     }
 
     class StatusConverter {
