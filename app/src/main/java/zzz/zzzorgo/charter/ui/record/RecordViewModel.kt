@@ -11,8 +11,6 @@ import zzz.zzzorgo.charter.data.repo.AccountRepository
 import zzz.zzzorgo.charter.data.repo.CategoryRepository
 import zzz.zzzorgo.charter.data.repo.CurrencyRepository
 import zzz.zzzorgo.charter.data.repo.RecordRepository
-import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
 
 
@@ -27,13 +25,6 @@ class RecordViewModel @Inject constructor(
     val allRecords: LiveData<List<Record>> = recordRepository.allRecords
     val allCategories: LiveData<List<Category>> = categoryRepository.allCategories
     val allAccounts: LiveData<List<Account>> = accountRepository.allAccounts
-    fun cur() = viewModelScope.launch {
-        val lol = currencyRepository.getCurrencyHistory(
-            Currency.getInstance("USD"),
-            LocalDateTime.now().minusYears(1)
-        )
-        println(String.format("lol %s", lol))
-    }
 
     /**
      * The implementation of insert() in the database is completely hidden from the UI.

@@ -1,82 +1,51 @@
 package zzz.zzzorgo.charter.data.repo
 
-import android.content.Context
-import com.android.volley.Request
-import com.android.volley.Response
-import zzz.zzzorgo.charter.data.model.CurrencyHistory
-import zzz.zzzorgo.charter.data.model.CurrencyHistoryPoint
-import zzz.zzzorgo.charter.data.model.cbr.CbrCurrencyHistory
-import zzz.zzzorgo.charter.data.model.cbr.CbrCurrencyList
-import zzz.zzzorgo.charter.utils.Network
-import zzz.zzzorgo.charter.utils.XmlRequest
-import java.math.BigDecimal
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import androidx.lifecycle.MutableLiveData
+import com.android.volley.Cache
+import zzz.zzzorgo.charter.data.model.cbr.CbrTodayCurrency
+import zzz.zzzorgo.charter.utils.network.Network
+import zzz.zzzorgo.charter.utils.network.RequestOptions
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import javax.inject.Singleton
 
-class CurrencyRepository @Inject constructor(private val context: Context) {
+@Singleton
+class CurrencyRepository @Inject constructor(private val network: Network) {
 
-    suspend fun getCurrencyHistory(currency: Currency, startDate: LocalDateTime): CurrencyHistory? {
-        val isoCode = currency.currencyCode
-        val mapIsoToCbrCurrency = getCbrCurrencyCodes()
-        val cbrCode = mapIsoToCbrCurrency[isoCode]
-        val startDateString = startDate.format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
-        val endDateString = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/YYYY"))
+    val mapCurrencyToValue = MutableLiveData(mutableMapOf<Currency, String>())
 
-        val url = String.format(
-            "https://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=%s&date_req2=%s&VAL_NM_RQ=%s",
-            startDateString,
-            endDateString,
-            cbrCode
-        )
+    suspend fun getCbrCurrencyForToday(): MutableMap<Currency, String> {
+        val url = "https://www.cbr.ru/scripts/XML_daily.asp"
 
-        val cbrHistory = makeRequest(url, CbrCurrencyHistory::class.java)
-
-        val history = CurrencyHistory()
-
-        cbrHistory?.ValCurs?.Record?.map {
-            history.points.add(CurrencyHistoryPoint(
-                LocalDate.parse(it.Date, DateTimeFormatter.ofPattern("d.MM.yyyy")),
-                BigDecimal(it.Value.replace(',', '.'))
-            ))
+        val options = RequestOptions().apply {
+            forceCache = expiresTomorrowCache()
         }
 
-        return history
+        val response = network.makeRequest(url, CbrTodayCurrency::class.java, options)
+
+        val _mapCurrencyToValue = response?.ValCurs?.Valute?.map {
+            Currency.getInstance(it.CharCode) to it.Value.replace(',', '.')
+        }?.toMap()?.toMutableMap()
+
+        _mapCurrencyToValue?.set(Currency.getInstance("RUB"), "1")
+
+        mapCurrencyToValue.postValue(_mapCurrencyToValue)
+        return _mapCurrencyToValue ?: mutableMapOf()
     }
 
-    private suspend fun getCbrCurrencyCodes(): Map<String?, String?> {
-        val url = "https://www.cbr.ru/scripts/XML_valFull.asp"
+    private fun expiresTomorrowCache(): Cache.Entry {
+        val cacheEntry = Cache.Entry()
+        val expires = ZonedDateTime
+            .now()
+            .plusDays(1)
+            .truncatedTo(ChronoUnit.DAYS)
+            .toInstant()
+            .toEpochMilli()
+        cacheEntry.softTtl = expires
+        cacheEntry.ttl = expires
 
-        val response = makeRequest(url, CbrCurrencyList::class.java)
-        val mapIsoToCbrCurrency = response?.Valuta?.Item?.map {
-            it.ISO_Char_Code to it.ParentCode?.trim()
-        }?.toMap()
-
-        return mapIsoToCbrCurrency ?: emptyMap()
+        return cacheEntry
     }
-
-    private suspend fun <T>makeRequest(url: String, modelClass: Class<T>) =
-        suspendCoroutine<T?> { cont ->
-            val jsonObjectRequest = XmlRequest(
-                Request.Method.GET,
-                url,
-                modelClass,
-                null,
-                true,
-                Response.Listener { response ->
-                    cont.resume(response)
-                },
-                Response.ErrorListener { error ->
-                    // TODO: Handle error
-                    println(error)
-                    cont.resume(null)
-                }
-            )
-
-            Network.getInstance(context).addToRequestQueue(jsonObjectRequest)
-        }
 }

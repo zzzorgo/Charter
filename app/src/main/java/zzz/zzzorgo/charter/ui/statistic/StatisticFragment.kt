@@ -28,6 +28,7 @@ class StatisticFragment : Fragment() {
         super.onAttach(context)
 
         (requireActivity().application as CharterApplication).appComponent.inject(this)
+        viewModel.updateCurrencyValues()
     }
 
     override fun onCreateView(
@@ -36,6 +37,10 @@ class StatisticFragment : Fragment() {
     ): View? {
 
         viewModel.balanceEntries.observe(viewLifecycleOwner, Observer { entries ->
+            if (chart.data != null) {
+                chart.data.clearValues()
+            }
+
             val dataSet = LineDataSet(entries, "Label")
             val lineData = LineData(dataSet)
             chart.data = lineData
@@ -47,6 +52,6 @@ class StatisticFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chart = view.findViewById<LineChart>(R.id.chart)
+        chart = view.findViewById(R.id.chart)
     }
 }

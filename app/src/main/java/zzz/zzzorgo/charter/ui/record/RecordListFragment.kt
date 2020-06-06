@@ -38,7 +38,7 @@ class RecordListFragment : Fragment() {
         viewModel.allRecords.observe(this.viewLifecycleOwner, Observer {
             recordListAdapter.setRecords(it)
         })
-        viewModel.cur()
+
         return inflater.inflate(R.layout.fragment_record_list, container, false)
     }
 

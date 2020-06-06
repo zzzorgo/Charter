@@ -14,6 +14,7 @@ import zzz.zzzorgo.charter.data.model.Category
 import zzz.zzzorgo.charter.data.model.Record
 import zzz.zzzorgo.charter.data.model.Settings
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -27,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
 
     private class WordDatabaseCallback(
+        private val context: Context,
         private val scope: CoroutineScope
     ) : RoomDatabase.Callback() {
 
@@ -34,12 +36,14 @@ abstract class AppDatabase : RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabaseMock(
+                    MockDataCreator().populateDatabaseMock(
+                        context,
                         database.recordDao(),
                         database.accountDao(),
                         database.settingsDao(),
                         database.categoryDao()
                     )
+//                    populateCurrencyHistory(context/*, database.currencyDao*/)
                 }
             }
         }
@@ -59,7 +63,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "database"
                 )
-                    .addCallback(WordDatabaseCallback(scope))
+                    .addCallback(WordDatabaseCallback(context, scope))
 //                    .addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
@@ -99,6 +103,16 @@ class Converters {
     @TypeConverter
     fun toLocalDateTime(value: String): LocalDateTime {
         return LocalDateTime.parse(value)
+    }
+
+    @TypeConverter
+    fun fromLocalDate(value: LocalDate): String {
+        return value.toString()
+    }
+
+    @TypeConverter
+    fun toLocalDate(value: String): LocalDate {
+        return LocalDate.parse(value)
     }
 }
 

@@ -15,6 +15,7 @@ import zzz.zzzorgo.charter.ui.record.RecordListFragment
 import zzz.zzzorgo.charter.ui.record.RecordModule
 import zzz.zzzorgo.charter.ui.statistic.StatisticFragment
 import zzz.zzzorgo.charter.ui.statistic.StatisticModule
+import zzz.zzzorgo.charter.utils.network.NetworkModule
 import javax.inject.Singleton
 
 @Singleton
@@ -24,7 +25,8 @@ import javax.inject.Singleton
     AccountModule::class,
     CategoryManagerModule::class,
     RecordModule::class,
-    StatisticModule::class
+    StatisticModule::class,
+    NetworkModule::class
 ])
 interface ApplicationComponent {
     @Component.Factory
