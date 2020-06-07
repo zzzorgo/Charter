@@ -18,7 +18,8 @@ import zzz.zzzorgo.charter.utils.showFragmentDialog
 import javax.inject.Inject
 
 class RecordListFragment : Fragment() {
-    private lateinit var recordListAdapter: RecordListAdapter
+    @Inject
+    lateinit var recordListAdapter: RecordListAdapter
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<RecordViewModel> { viewModelFactory }
@@ -44,8 +45,6 @@ class RecordListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        recordListAdapter = RecordListAdapter(requireContext())
 
         record_list.apply {
             layoutManager = LinearLayoutManager(requireContext())

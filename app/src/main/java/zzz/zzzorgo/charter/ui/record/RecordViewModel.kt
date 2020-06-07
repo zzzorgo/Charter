@@ -12,9 +12,9 @@ import zzz.zzzorgo.charter.data.repo.CategoryRepository
 import zzz.zzzorgo.charter.data.repo.CurrencyRepository
 import zzz.zzzorgo.charter.data.repo.RecordRepository
 import javax.inject.Inject
+import javax.inject.Singleton
 
-
-// Class extends AndroidViewModel and requires application as a parameter.
+@Singleton
 class RecordViewModel @Inject constructor(
     private val recordRepository: RecordRepository,
     categoryRepository: CategoryRepository,

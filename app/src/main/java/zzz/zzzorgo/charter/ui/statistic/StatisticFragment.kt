@@ -50,6 +50,8 @@ class StatisticFragment : Fragment() {
 
             val dataSet = LineDataSet(entries, "Label")
             dataSet.setDrawCircles(false)
+            dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+            dataSet.setDrawCircleHole(false)
             dataSet.lineWidth = 2F
             dataSet.setDrawValues(false)
             dataSet.setDrawFilled(true)

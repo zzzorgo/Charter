@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import zzz.zzzorgo.charter.data.DatabaseModule
+import zzz.zzzorgo.charter.ui.MainActivity
 import zzz.zzzorgo.charter.ui.account.AccountEditFragment
 import zzz.zzzorgo.charter.ui.account.AccountListFragment
 import zzz.zzzorgo.charter.ui.account.AccountModule
@@ -33,6 +34,8 @@ interface ApplicationComponent {
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): ApplicationComponent
     }
+
+    fun inject(activity: MainActivity)
 
     fun inject(fragment: RecordEditFragment)
     fun inject(fragment: RecordListFragment)

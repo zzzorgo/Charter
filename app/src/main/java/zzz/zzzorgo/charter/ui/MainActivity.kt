@@ -4,12 +4,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import zzz.zzzorgo.charter.CharterApplication
 import zzz.zzzorgo.charter.R
+import zzz.zzzorgo.charter.data.repo.CurrencyRepository
 import zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment
+import zzz.zzzorgo.charter.ui.record.RecordViewModel
+import zzz.zzzorgo.charter.ui.statistic.StatisticViewModel
+import javax.inject.Inject
 
 val bottomNavBarItemIdToNavAction = mapOf(
     R.id.destination_account_list to R.id.action_to_account_list,
@@ -21,12 +29,31 @@ val bottomNavBarItemIdToNavAction = mapOf(
 class MainActivity : AppCompatActivity(),
     CategoryManagerFragment.OnListFragmentInteractionListener
 {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val recordViewModel by viewModels<RecordViewModel> { viewModelFactory }
+    private val statisticViewModel by viewModels<StatisticViewModel> { viewModelFactory }
+
+    @Inject
+    lateinit var currencyRepository: CurrencyRepository
+
     var data: Map<String?, String?>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        (application as CharterApplication).appComponent.inject(this)
+
+
         setContentView(R.layout.activity_main)
 //        setSupportActionBar(toolbar)
         setupBottomNavBar()
+        preFetchAllData()
+    }
+
+    private fun preFetchAllData() {
+        recordViewModel.allRecords.observe(this, Observer {  })
+        statisticViewModel.updateCurrencyValues()
+        statisticViewModel.balanceEntries.observe(this, Observer {  })
     }
 
     private fun setupBottomNavBar() {

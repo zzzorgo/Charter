@@ -98,7 +98,7 @@ class MockDataCreator() {
         val outcomeCategories = listOf(nullCategory, foodCategory, transportCategory, homeCategory)
         val incomeCategories = listOf(nullCategory, salaryCategory, royaltyCategory)
 
-        val outcomeRecords = (1..70).map {
+        val outcomeRecords = (1..2000).map {
             val category = outcomeCategories.random()
             val record = Record(category.id).apply {
                 val account = accounts.random()
@@ -111,7 +111,7 @@ class MockDataCreator() {
             record
         }
 
-        val incomeRecords = (1..20).map {
+        val incomeRecords = (1..600).map {
             val category = incomeCategories.random()
             val record = Record(category.id).apply {
                 val account = accounts.random()
@@ -127,7 +127,7 @@ class MockDataCreator() {
         val currencyRepository = CurrencyRepository(Network(context, BasicNetwork(HurlStack())))
         val currencyValues = currencyRepository.getCbrCurrencyForToday()
 
-        val transferRecords = (1..20).map {
+        val transferRecords = (1..600).map {
             val category = nullCategory
             val record = Record(category.id).apply {
                 val accountTo = accounts.random()

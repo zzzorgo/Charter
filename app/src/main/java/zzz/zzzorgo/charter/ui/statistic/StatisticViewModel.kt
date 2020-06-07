@@ -11,14 +11,15 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class StatisticViewModel @Inject constructor(
     recordRepository: RecordRepository,
     private val currencyRepository: CurrencyRepository
 ): ViewModel() {
 
     val balanceEntries: LiveData<List<Entry>>
-    var allCurrencies: LiveData<Set<Currency>>
     private val balanceEntriesDeps: MediatorLiveData<BalanceEntriesDepsData> = MediatorLiveData()
 
     init {
@@ -32,19 +33,6 @@ class StatisticViewModel @Inject constructor(
             val prevValue = balanceEntriesDeps.value
             val newValue = BalanceEntriesDepsData(prevValue?.records ?: emptyList(), it)
             balanceEntriesDeps.value = newValue
-        }
-
-        allCurrencies = Transformations.map(recordRepository.allRecords) { records ->
-
-            records.fold(mutableSetOf<Currency>()) { acc, record ->
-                when(record.type) {
-                    Record.Type.TRANSFER -> acc.addAll(setOf(record.currencyFrom as Currency, record.currencyTo as Currency))
-                    Record.Type.OUTCOME -> acc.add(record.currencyFrom as Currency)
-                    Record.Type.INCOME -> acc.add(record.currencyTo as Currency)
-                }
-
-                acc
-            }
         }
 
         balanceEntries = Transformations.map(balanceEntriesDeps) { deps ->

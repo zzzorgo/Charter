@@ -14,10 +14,11 @@ import zzz.zzzorgo.charter.data.repo.SettingsRepository
 import java.math.BigDecimal
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
 data class AccountWithTotal(val account: Account, val total: BigDecimal)
 
-// Class extends AndroidViewModel and requires application as a parameter.
+@Singleton
 class AccountViewModel @Inject constructor(
     private var accountRepository: AccountRepository,
     private var recordRepository: RecordRepository,

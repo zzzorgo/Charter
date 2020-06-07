@@ -9,8 +9,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import zzz.zzzorgo.charter.R
 import zzz.zzzorgo.charter.data.model.Record
+import javax.inject.Inject
 
-class RecordListAdapter internal constructor(
+class RecordListAdapter @Inject internal constructor(
     context: Context
 ) : RecyclerView.Adapter<RecordListAdapter.RecordViewHolder>() {
 
