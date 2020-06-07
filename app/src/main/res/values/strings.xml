@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">Charter</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="save_button_caption">Save</string>
     <string name="edit_categories_button_caption">Categories</string>
+
+    <!-- navigation -->
+    <string name="accounts_fragment_title">Accounts</string>
+    <string name="records_fragment_title">Records</string>
+    <string name="statistic_fragment_title">Statistic</string>
+    <string name="misc_fragment_title">Misc</string>
 </resources>

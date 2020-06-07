@@ -3,7 +3,7 @@ package zzz.zzzorgo.charter.utils.network
 import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import com.google.gson.Gson
-import zzz.zzzorgo.charter.utils.ModelConverter
+import zzz.zzzorgo.charter.utils.ModelParser
 import java.io.UnsupportedEncodingException
 import java.nio.charset.Charset
 
@@ -34,7 +34,7 @@ class XmlRequest<T>(
 
             // implement DI?
             Response.success(
-                ModelConverter(Gson())
+                ModelParser(Gson())
                     .xmlStringToModel(xmlAsString, modelClass), cacheEntry)
         } catch (e: UnsupportedEncodingException) {
             Response.error(ParseError(e))

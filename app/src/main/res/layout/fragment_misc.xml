@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.misc.MiscFragment"
-    android:background="@color/colorMain">
+    tools:context=".ui.misc.MiscFragment">
 
     <Button
         android:id="@+id/open_category_manager"

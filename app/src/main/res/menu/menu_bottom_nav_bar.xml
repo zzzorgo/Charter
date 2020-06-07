@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item  android:id="@+id/destination_account_list" android:title="Accounts" />
-    <item  android:id="@+id/destination_record_list" android:title="Records" />
-    <item  android:id="@+id/destination_statistic" android:title="Statistic" />
-    <item  android:id="@+id/destination_misc" android:title="Misc" />
+    <item
+        android:id="@+id/destination_account_list"
+        android:title="@string/accounts_fragment_title"
+        android:icon="@drawable/ic_style_24px" />
+    <item
+        android:id="@+id/destination_record_list"
+        android:icon="@drawable/ic_view_list_24px"
+        android:title="@string/records_fragment_title" />
+    <item
+        android:id="@+id/destination_statistic"
+        android:icon="@drawable/ic_pie_chart_24px"
+        android:title="@string/statistic_fragment_title" />
+    <item
+        android:id="@+id/destination_misc"
+        android:icon="@drawable/ic_category_24px"
+        android:title="@string/misc_fragment_title" />
 </menu>

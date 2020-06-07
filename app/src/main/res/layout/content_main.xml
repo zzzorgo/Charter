@@ -24,6 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        app:menu="@menu/menu_bottom_nav_bar" />
+        app:menu="@menu/menu_bottom_nav_bar"
+        android:theme="@style/AppTheme.BottomNavigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

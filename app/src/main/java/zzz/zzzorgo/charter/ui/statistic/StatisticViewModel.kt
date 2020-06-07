@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import zzz.zzzorgo.charter.data.model.Record
 import zzz.zzzorgo.charter.data.repo.CurrencyRepository
 import zzz.zzzorgo.charter.data.repo.RecordRepository
+import zzz.zzzorgo.charter.utils.getSeconds
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -47,7 +48,7 @@ class StatisticViewModel @Inject constructor(
         }
 
         balanceEntries = Transformations.map(balanceEntriesDeps) { deps ->
-            val records = deps.records
+            val records = deps.records.reversed()
             val firstRecordDate = if (records.isEmpty())
                 LocalDateTime.now() else
                 records.first().date
@@ -74,12 +75,14 @@ class StatisticViewModel @Inject constructor(
                         acc.currencyTotalMap[currencyTo] = currencyTotalTo + record.valueTo as BigDecimal
                     }
                 }
-                val lastEntry = acc.points.last()
-                val x = lastEntry.x + 1
+
+                val x = getSeconds(record.date).toFloat()
                 val y = acc.getCurrentTotal(deps.currencyValues)
                 acc.points.add(Entry(x, y))
                 acc
             }
+
+            result.points.add(0, Entry(getSeconds(firstRecordDate).toFloat(), 0F))
 
             result.points
         }
@@ -92,12 +95,10 @@ class StatisticViewModel @Inject constructor(
 
     class ChartPointsAccumulator {
         val currencyTotalMap = mutableMapOf<Currency, BigDecimal>()
-        val points = mutableListOf<Entry>(Entry(0F ,0F))
+        val points = mutableListOf<Entry>()
 
         fun getCurrentTotal(currencyMultiplier: MutableMap<Currency, String>): Float {
             return currencyTotalMap.entries.fold(BigDecimal.ZERO) { acc, entry ->
-                println(String.format("%s", entry.key.currencyCode))
-                println(String.format("%s", currencyMultiplier.size))
                 acc + entry.value * BigDecimal(currencyMultiplier[entry.key] ?: "1")
             }.toFloat()
         }

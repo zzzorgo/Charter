@@ -6,4 +6,5 @@
     <color name="colorMain">#33333D</color>
     <color name="colorElement">#373740</color>
     <color name="colorTextMain">#FFFFFF</color>
+    <color name="colorTransparent">#00000000</color>
 </resources>

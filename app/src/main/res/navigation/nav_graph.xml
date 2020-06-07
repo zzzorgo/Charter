@@ -8,26 +8,26 @@
     <fragment
         android:id="@+id/destination_account_list"
         android:name="zzz.zzzorgo.charter.ui.account.AccountListFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/accounts_fragment_title"
         tools:layout="@layout/fragment_account_list"/>
 
     <fragment
         android:id="@+id/destination_record_list"
         android:name="zzz.zzzorgo.charter.ui.record.RecordListFragment"
-        android:label="RecordListFragment"
+        android:label="@string/records_fragment_title"
         tools:layout="@layout/fragment_record_list" />
 
     <fragment
         android:id="@+id/destination_statistic"
         android:name="zzz.zzzorgo.charter.ui.statistic.StatisticFragment"
-        android:label="StatisticFragment"
+        android:label="@string/statistic_fragment_title"
         tools:layout="@layout/fragment_statistic" >
     </fragment>
 
     <fragment
         android:id="@+id/destination_misc"
         android:name="zzz.zzzorgo.charter.ui.misc.MiscFragment"
-        android:label="MiscFragment"
+        android:label="@string/misc_fragment_title"
         tools:layout="@layout/fragment_misc" >
         <action
             android:id="@+id/action_destination_misc_to_categoryManagerFragment"

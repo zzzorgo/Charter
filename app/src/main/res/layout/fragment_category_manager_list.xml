@@ -7,17 +7,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/category_list"
         android:name="zzz.zzzorgo.charter.ui.misc.CategoryManagerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context=".ui.misc.CategoryManagerFragment"
-        tools:listitem="@layout/item_category_manager"
-        android:background="@color/colorMain"/>
+        tools:listitem="@layout/item_category_manager" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_category_button"

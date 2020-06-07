@@ -137,7 +137,7 @@ class MockDataCreator() {
                     .divide(BigDecimal(100L))
 
                 valueFrom = _valueFrom
-                valueTo = _valueFrom * BigDecimal(currencyValues[accountFrom.currency])
+                valueTo = _valueFrom * BigDecimal(currencyValues[accountFrom.currency]) / BigDecimal(currencyValues[accountTo.currency])
 
                 currencyTo = accountTo.currency
                 currencyFrom = accountFrom.currency
@@ -159,7 +159,7 @@ class MockDataCreator() {
 
         val random = Random.nextLong(min, max)
 
-        return Instant.ofEpochMilli(random).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return Instant.ofEpochMilli(random).atZone(ZoneId.systemDefault()).toLocalDateTime()
     }
 }
 //
